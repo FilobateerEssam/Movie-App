@@ -1,13 +1,26 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import { useDispatch, useSelector } from "react-redux";
+import {  getpage } from "../redux/actions/MovieAction";
 
-const PaginationPages = ({getpage , PageCount}) => {
+const PaginationPages = () => {
+
+  const [PageCounts, setPageCount] = useState(0);
+  const dispatch = useDispatch();
+  const pages = useSelector((state) => state.pageCount);
+
+  // to call when the page is loaded
+  useEffect(() => {
+
+    setPageCount(pages);
+  }, []);
+
+
 
   const handlePageClick = (data) => {
-    getpage(data.selected + 1);
-    console.log(data.selected + 1);
+    dispatch(getpage(data.selected + 1));
   };
-
-  const pageCount = PageCount;
 
   return (
     <ReactPaginate
@@ -16,7 +29,7 @@ const PaginationPages = ({getpage , PageCount}) => {
       onPageChange={handlePageClick}
       marginPagesDisplayed={2} // number of pages to display in pagination in back
       pageRangeDisplayed={3} // number of pages to display in pagination in front
-      pageCount={pageCount}
+      pageCount={PageCounts}
       previousLabel="السابق"
       containerClassName={"pagination justify-content-center p-3"}
       pageClassName={"page-item"}
